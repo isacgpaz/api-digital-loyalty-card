@@ -11,8 +11,17 @@ const createUser = async (request: Request, response: Response) => {
     if(await User.findOne({ email })){
       return response.status(400).send({ error: 'User already exists. '});
     }
-
+    
     const user = await User.create({ name, email });
+
+    for(let i = 0; i < 15; i++){
+      const flag = await Flag.create({ index: i + 1 });
+      user.flags.push(flag);
+    }
+
+    await user.save();
+
+    return response.send({ user });
   }catch(error){
     return response.status(400).send({ error: error.message });
   }
@@ -44,18 +53,22 @@ const updateUser = async (request: Request, response: Response) => {
 
     const user = await User.findByIdAndUpdate(request.params.userId, {
       name,
-      email
-    }).populate('flags');
+      email,
+    }, { new: true }).populate('flags');
     
     if(!user){
       return response.status(400).send({ error: 'User not found.' });
     }
-    
+
     user.flags = [];
 
     await Promise.all(flags.map(async (flag: IFlag) => {
-      const userFlag = await Flag.findById(flag.id);
+      const isChecked = flag.isChecked;
       
+      const userFlag = await Flag.findByIdAndUpdate(flag._id, { 
+        isChecked
+      }, { new: true });
+
       if(userFlag){
         await userFlag.save();
         user.flags.push(userFlag);

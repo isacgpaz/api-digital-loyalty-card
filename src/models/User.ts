@@ -12,10 +12,13 @@ const userSchema: Schema = new Schema({
     unique: true,
     required: true
   },
+  imageUrl: {
+    type: String
+  },
   flags: [{
     type: Schema.Types.ObjectId,
     ref: 'Flag',
-    default: []
+    default: [15]
   }]
 }, { timestamps: true });
 
