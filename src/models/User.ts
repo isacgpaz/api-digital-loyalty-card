@@ -15,6 +15,10 @@ const userSchema: Schema = new Schema({
   imageUrl: {
     type: String
   },
+  googleId: {
+    type: String,
+    required: true
+  },
   flags: [{
     type: Schema.Types.ObjectId,
     ref: 'Flag',

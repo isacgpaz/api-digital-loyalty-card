@@ -4,7 +4,7 @@ import User from "../models/User";
 import Flag from "../models/Flag";
 
 const createUser = async (request: Request, response: Response) => {
-  const { name, email } = request.body;
+  const { name, email, googleId, imageUrl } = request.body;
 
   try{
     //Check if user exists
@@ -12,9 +12,9 @@ const createUser = async (request: Request, response: Response) => {
       return response.status(400).send({ error: 'User already exists. '});
     }
     
-    const user = await User.create({ name, email });
+    const user = await User.create({ name, email, googleId, imageUrl });
 
-    for(let i = 0; i < 15; i++){
+    for(let i = 0; i < 13; i++){
       const flag = await Flag.create({ index: i + 1 });
       user.flags.push(flag);
     }
@@ -38,8 +38,11 @@ const getAllUsers = async (request: Request, response: Response) => {
 }
 
 const getUser = async (request: Request, response: Response) => {
+  const googleId = request.params.userId;
+
   try{
-    const user = await User.findById(request.params.userId).populate('flags');
+    const user = await User.findOne({ googleId }).populate('flags');
+    console.log(user);
 
     return response.status(200).send({ user });
   }catch(error){
@@ -49,11 +52,13 @@ const getUser = async (request: Request, response: Response) => {
 
 const updateUser = async (request: Request, response: Response) => {
   try{
-    const { name, email, flags } = request.body;
+    const { name, email, googleId, imageUrl, flags } = request.body;
 
     const user = await User.findByIdAndUpdate(request.params.userId, {
       name,
       email,
+      googleId,
+      imageUrl
     }, { new: true }).populate('flags');
     
     if(!user){
