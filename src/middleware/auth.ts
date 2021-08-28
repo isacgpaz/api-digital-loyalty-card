@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken';
-import 'dotenv/config';
 import Admin from "../models/Admin";
 import { IAdmin } from "../interfaces/IAdmin";
 
