@@ -42,7 +42,6 @@ const getUser = async (request: Request, response: Response) => {
 
   try{
     const user = await User.findOne({ googleId }).populate('flags');
-    console.log(user);
 
     return response.status(200).send({ user });
   }catch(error){
@@ -54,7 +53,7 @@ const updateUser = async (request: Request, response: Response) => {
   try{
     const { name, email, googleId, imageUrl, flags } = request.body;
 
-    const user = await User.findByIdAndUpdate(request.params.userId, {
+    const user = await User.findOneAndUpdate({ googleId }, {
       name,
       email,
       googleId,

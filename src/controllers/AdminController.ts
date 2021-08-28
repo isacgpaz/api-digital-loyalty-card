@@ -51,6 +51,8 @@ const auth = async (request: Request, response: Response) => {
     //Clear password
     admin.password = String(undefined);
 
+    console.log(admin);
+
     return response.status(201).send({
       admin,
       token: generateToken({ 'id': admin.id })

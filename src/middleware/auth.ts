@@ -6,7 +6,7 @@ import { IAdmin } from "../interfaces/IAdmin";
 
 export default async function authMiddleware(request: Request, response: Response, next: NextFunction){
   const { authorization } = request.headers;  
-  
+  console.log(request.headers);
   if(!authorization){
     return response.status(401);
   }
