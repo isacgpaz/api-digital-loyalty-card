@@ -24,7 +24,7 @@ userRouter.delete('/:userId', authMiddleware, UserController.removeUser);
 
 adminRouter.post('/auth', AdminController.auth);
 
-adminRouter.post('/', AdminController.createAdmin);
+adminRouter.post('/', authMiddleware, AdminController.createAdmin);
 adminRouter.get('/', authMiddleware, AdminController.getAllAdmins);
 adminRouter.get('/:adminId', authMiddleware, AdminController.getAdmin);
 adminRouter.put('/:adminId', authMiddleware, AdminController.updateAdmin);
