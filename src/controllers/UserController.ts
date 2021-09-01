@@ -14,7 +14,7 @@ const createUser = async (request: Request, response: Response) => {
     
     const user = await User.create({ name, email, googleId, imageUrl });
 
-    for(let i = 0; i < 13; i++){
+    for(let i = 0; i < 12; i++){
       const flag = await Flag.create({ index: i + 1 });
       user.flags.push(flag);
     }
